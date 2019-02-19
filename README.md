@@ -242,7 +242,7 @@ index 8d963c5..ce8cb6a 100644
 +    ${result}=  Ping  135.65.0.1  150.0.0.1
 +    Should Be Equal As Integers  ${result}  1
 ```
-*теперь я ожидаю увидеть два eBGP маршрута на роутере HKI-CORE-01, так же добавлена проверка 
+*теперь я ожидаю увидеть два eBGP маршрута на роутере HKI-CORE-01, так же добавлена дополнительная проверка связности*
 
 ![alt text](https://github.com/showroute/batfish-habr/blob/master/images/test4.png)
 
