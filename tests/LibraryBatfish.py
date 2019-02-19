@@ -32,7 +32,6 @@ class LibraryBatfish(object):
         routes = bfq.routes(nodes=node, protocols=protocol).answer()
         return len(routes.rows)
 
-
     def check_isis_neighbors(self, description):
         not_isis_enabled_links = list()
         for link in self._get_isis_enabled_links(description):
@@ -64,7 +63,6 @@ class LibraryBatfish(object):
             return True
         else:
             return False
-
 
     def _get_paths(self, source_ip, destination_ip, addresses):
         tracert = self._unidirectional_virtual_traceroute(source_ip, destination_ip, addresses)
