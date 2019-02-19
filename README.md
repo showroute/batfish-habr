@@ -145,19 +145,19 @@ Nice! Полагаю, теперь Вам стало яснее, что есть
 * Определять статус BGP пиров в сети
 * Определять состояние IS-IS соседей
 * Проверять наличие E2E связности между узлами в сети с демонстрацией трассировки
-* Определять размер RIB на определенном маршрутизаторе для определенного Routing protocol
+* Определять размер RIB на определенном маршрутизаторе для определенного routing protocol
 
 [LibraryBatfish.py](https://github.com/showroute/batfish-habr/blob/master/tests/LibraryBatfish.py)
 
 [batfish-test.robot](https://github.com/showroute/batfish-habr/blob/master/tests/batfish-test.robot)
 
-Let’s treat the network like an application!
+Let’s treat a network like an application!
 
 ## Case N1
 
 ![alt text](https://github.com/showroute/batfish-habr/blob/master/images/topology1.png)
 
-Под моим управление находится все та же сеть. Я решил привести в порядок фильтры на границе AS41214 и AS10631 и заблокировать на стыке пакеты, содержащие в source или destination ip адреса из диапазона BOGONS.
+Под моим управление находится все та же сеть. Я решил привести в порядок фильтры на границе **AS 41214** и **AS 10631** и заблокировать на стыке пакеты, содержащие в source или destination ip адреса из диапазона BOGONS.
 
 Запустим тест до внесения изменений.
 
@@ -188,7 +188,7 @@ set interfaces ge-0/0/2.0 family inet filter output BOGONS
 
 ![alt text](https://github.com/showroute/batfish-habr/blob/master/images/test2.png)
 
-Oops. Я был очень близок, но как показывает вывод теста, после внесенных изменений BGP соседство 192.168.30.0 – 192.168.30.1 находится не в состоянии Established -> как следствие, теряется IP связность между точками 135.65.0.1 <-> 140.0.0.1. Что же не так? Смотрим внимательно в конфигурацию HKI-CORE-01 и видимо, что eBGP пиринг установлен на приватных адресах: 
+Oops. Я был очень близок, но как показывает вывод теста, после внесенных изменений BGP соседство 192.168.30.0 – 192.168.30.1 находится не в состоянии Established -> как следствие, теряется IP связность между точками 135.65.0.1 <-> 140.0.0.1. Что же не так? Смотрим внимательно в конфигурацию **HKI-CORE-01** и видим, что eBGP пиринг установлен на приватных адресах: 
 ```
 showroute@HKI-CORE-01# show interfaces ge-0/0/2 | display set             
 set interfaces ge-0/0/2 description SPB-CORE-01
@@ -198,7 +198,7 @@ set interfaces ge-0/0/2 unit 0 family inet address 192.168.30.0/31
 ```
 Вывод: необходимо поменять адреса на стыке или добавить в исключение подсеть 192.168.30.0/31.
 
-Добавлю сеть на стыке в исключение - снова обновлю /tmp/habr/configs/HKI-CORE-01.cfg:
+Добавлю сеть на стыке в исключение, вноь обновлю /tmp/habr/configs/HKI-CORE-01.cfg:
 ```
 set firewall family inet filter BOGONS term TERM005 from address 192.168.0.0/31 
 set firewall family inet filter BOGONS term TERM005 then accept               
@@ -207,7 +207,7 @@ set firewall family inet filter BOGONS term TERM005 then accept
 
 ![alt text](https://github.com/showroute/batfish-habr/blob/master/images/test3.png)
 
-It is working! Теперь нежелательный трафик не пройдет через ebgp стык  AS 41214 – AS10631. Можно смело вносить изменения в prod, не опасаясь последствий.
+It is working! Теперь нежелательный трафик не пройдет через ebgp стык  AS 41214 – AS10631. Можно смело вносить изменения на prod, не опасаясь последствий.
 
 ## Case N2
 
@@ -259,7 +259,7 @@ index 8d963c5..ce8cb6a 100644
 
 ![alt text](https://github.com/showroute/batfish-habr/blob/master/images/test4.png)
 
-Связности между 135.65.0.1 и 150.0.0.1 нет, к тому же на маршрутизаторе **HKI-CORE-01** всего один eBGP маршрут, вместо двух. Проверим содержимое RIB на HKI-CORE-01 при добавлении новой конфигурации на роутер MSK-CORE-01:
+Связности между 135.65.0.1 и 150.0.0.1 нет, к тому же на маршрутизаторе **HKI-CORE-01** всего один eBGP маршрут, вместо двух. Проверим содержимое RIB на **HKI-CORE-01** при добавлении новой конфигурации на роутер **MSK-CORE-01**:
 ```
 showroute@HKI-CORE-01# run show route table inet.0 protocol bgp
 
@@ -295,7 +295,7 @@ inet.0: 20 destinations, 20 routes (19 active, 0 holddown, 1 hidden)
                 Router ID: 10.68.1.1
                 Hidden reason: rejected by import policy
 ```
-Обратим внимание на политику импорта префиксов, полученных от SPB-CORE-01:
+Обратим внимание на политику импорта префиксов, полученных от **SPB-CORE-01**:
 ```
 set protocols bgp group AS10631 import FROM-AS10631
 set protocols bgp group AS10631 neighbor 192.168.30.1 description SPB-CORE-01
@@ -319,12 +319,11 @@ showroute@HKI-CORE-01# show | compare
 Отлично, связность между сетями есть, все тесты пройдены! Можно вносить изменения на prod.
 
 ## Сonclusion
-Я считаю, что Batfish - это мощнейщий инструмент с огромным потенциалом. Но, к сожалению, его функционал пока еще ограничен - отсутствует поддержка MPLS, Layer2 technologies etc. Если Вам данная тема интересна - присоединяйтесь в slack чат, разработчики Batfish с удовольсвтием отвечают на любые вопросы и быстро правят баги.
+Я считаю, что Batfish - это мощнейщий инструмент с огромным потенциалом. Но, к сожалению, его функционал пока еще несовершене - отсутствует поддержка MPLS, Layer2 technologies etc. Если данная тема Вам интересна - присоединяйтесь в slack чат, разработчики Batfish с удовольсвтием отвечают на любые вопросы и быстро правят баги.
 
 https://batfish-org.slack.com
 
 Благодарю за внимание.
-
 
 ## Useful links
 
