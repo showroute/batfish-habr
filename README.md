@@ -112,7 +112,7 @@ Awesome!
 4  hki-core-01  default     10.0.0.2/31  ams-core-01    10.0.0.6   isisL2              18      20  None
 5  hki-core-01  default  172.20.20.1/32  sth-core-01    10.0.0.4   isisL2              18      30  None
 ```
-В консоли:
+В cli:
 ```
 showroute@HKI-CORE-01# run show route table inet.0 protocol isis
 
@@ -152,6 +152,7 @@ Let’s treat the network like an application!
 Под моим управление находится все та же сеть. Я решил привести в порядок фильтры на границе AS41214 и AS10631 и заблокировать на стыке пакеты, содержащие в source или destination ip адреса из диапазона BOGONS.
 
 Запустим тест до внесения изменений.
+
 ![alt text](https://github.com/showroute/batfish-habr/blob/master/images/test1.png)
 
 Тесты пройдены, внесем изменения в тестовую конфигурацию роутера **HKI-CORE-01** - /tmp/habr/configs/HKI-CORE-01.cfg :
