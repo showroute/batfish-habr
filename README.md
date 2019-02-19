@@ -208,7 +208,7 @@ set interfaces ge-0/0/2 unit 0 family inet address 192.168.30.0/31
 set firewall family inet filter BOGONS term TERM005 from address 192.168.0.0/31 
 set firewall family inet filter BOGONS term TERM005 then accept               
 ```
-Запустим тест.
+Запускаем тест.
 
 ![alt text](https://github.com/showroute/batfish-habr/blob/master/images/test3.png)
 
