@@ -19,18 +19,16 @@ Batfish не требуется доступ на сетевое оборудо�
 * показать путь для конкретного flow (virtual traceroute)
 
 Поддерживаемые платформы:
-•	Arista
-•	Aruba
-•	AWS (VPCs, Network ACLs, VPN GW, NAT GW, Internet GW, Security Groups, etc…)
-•	Cisco (All Cisco NX-OS, IOS, IOS-XE, IOS-XR and ASA devices)
-•	Dell Force10
-•	Foundry
-•	iptables (on hosts)
-•	Juniper (All JunOS platforms: MX, EX, QFX, SRX, T-series, PTX)
-•	MRV
-•	Palo Alto Networks
-•	Quagga / FRR
-•	Quanta
-•	VyOS
-
-
+* Arista
+* Aruba
+* AWS (VPCs, Network ACLs, VPN GW, NAT GW, Internet GW, Security Groups, etc…)
+* Cisco (All Cisco NX-OS, IOS, IOS-XE, IOS-XR and ASA devices)
+* Dell Force10
+* Foundry
+* iptables (on hosts)
+* Juniper (All JunOS platforms: MX, EX, QFX, SRX, T-series, PTX)
+* MRV
+* Palo Alto Networks
+* Quagga / FRR
+* Quanta
+* VyOS
