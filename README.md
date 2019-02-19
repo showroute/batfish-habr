@@ -139,6 +139,9 @@ Nice! Полагаю, теперь Вам стало яснее, что есть
 * Проверять наличие E2E связности между узлами в сети с демонстрацией трассировки
 * Определять размер RIB на определенном маршрутизаторе для определенного Routing protocol
 
+[LibraryBatfish.py](https://github.com/showroute/batfish-habr/blob/master/tests/LibraryBatfish.py)
+[batfish-test.robot](https://github.com/showroute/batfish-habr/blob/master/tests/batfish-test.robot)
+
 Let’s treat the network like an application!
 
 ## Case N1
