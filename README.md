@@ -63,3 +63,80 @@ root@ea9a1559d88e:/# python3
 
 'ss_e8065858-a911-4f8a-b020-49c9b96d0381'
 ```
+
+**/tmp/habr** – директория с конфигурационными файлами роутеров.
+
+```
+root@ea9a1559d88e:/tmp/habr# tree
+.
+`-- configs
+    |-- AMS-CORE-01.cfg
+    |-- HKI-CORE-01.cfg
+    |-- LDN-CORE-01.cfg
+    |-- MSK-CORE-01.cfg
+    |-- SPB-CORE-01.cfg
+    `-- STH-CORE-01.cfg
+
+1 directory, 6 files
+```
+
+Давайте определим статус BGP сессий на роутере LDN-CORE-01:
+```
+>>> bgp_peers = bfq.bgpSessionStatus(nodes='LDN-CORE-01').answer().frame()
+>>> bgp_peers
+          Node      VRF  Local_AS        Local_Interface     Local_IP  Remote_AS  Remote_Node    Remote_IP Session_Type Established_Status
+0  ldn-core-01  default     41214  ldn-core-01:Loopback0  172.20.20.1      41214  sth-core-01  172.20.20.2         IBGP        ESTABLISHED
+1  ldn-core-01  default     41214  ldn-core-01:Loopback0  172.20.20.1      41214  ams-core-01  172.20.20.3         IBGP        ESTABLISHED
+2  ldn-core-01  default     41214  ldn-core-01:Loopback0  172.20.20.1      41214  hki-core-01  172.20.20.4         IBGP        ESTABLISHED
+```
+Похоже на правду?
+```
+LDN-CORE-01#show ip bgp summary
+…
+Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
+172.20.20.2     4        41214     629     669        9    0    0 00:56:51        0
+172.20.20.3     4        41214     826     827        9    0    0 01:10:18        0
+172.20.20.4     4        41214     547     583        9    0    0 00:49:24        1…..
+```
+Awesome!
+
+Давайте посмотрим, какие IS-IS маршруты есть в RIB на маршрутизаторе HKI-CORE-01 по мнению Batfish
+```
+>>> isis_routes = bfq.routes(nodes='HKI-CORE-01', protocols='isis').answer().frame()
+>>> isis_routes
+          Node      VRF         Network     Next_Hop Next_Hop_IP Protocol  Admin_Distance  Metric   Tag
+0  hki-core-01  default  172.20.20.3/32  ams-core-01    10.0.0.6   isisL2              18      20  None
+1  hki-core-01  default  172.20.20.2/32  sth-core-01    10.0.0.4   isisL2              18      10  None
+2  hki-core-01  default     10.0.0.0/31  sth-core-01    10.0.0.4   isisL2              18      20  None
+3  hki-core-01  default  172.20.20.1/32  ams-core-01    10.0.0.6   isisL2              18      30  None
+4  hki-core-01  default     10.0.0.2/31  ams-core-01    10.0.0.6   isisL2              18      20  None
+5  hki-core-01  default  172.20.20.1/32  sth-core-01    10.0.0.4   isisL2              18      30  None
+```
+В консоли:
+```
+showroute@HKI-CORE-01# run show route table inet.0 protocol isis
+
+inet.0: 18 destinations, 18 routes (18 active, 0 holddown, 0 hidden)
++ = Active Route, - = Last Active, * = Both
+
+10.0.0.0/31        *[IS-IS/18] 00:51:25, metric 20
+                    > to 10.0.0.4 via ge-0/0/0.0
+10.0.0.2/31        *[IS-IS/18] 00:51:45, metric 20
+                    > to 10.0.0.6 via ge-0/0/1.0
+172.20.20.1/32     *[IS-IS/18] 00:51:25, metric 30
+                      to 10.0.0.4 via ge-0/0/0.0
+                    > to 10.0.0.6 via ge-0/0/1.0
+172.20.20.2/32     *[IS-IS/18] 00:51:25, metric 10
+                    > to 10.0.0.4 via ge-0/0/0.0
+172.20.20.3/32     *[IS-IS/18] 00:51:45, metric 20
+                    > to 10.0.0.6 via ge-0/0/1.0
+```
+Nice! Полагаю, теперь Вам стало яснее, что есть Batfish.
+
+В начале статьи я писал, что BF можно использовать для проверки конфигурационных изменений перед внесением в prod. Далее я рассмотрю процесс проведения тестирования сети на базе **RobotFramework**, для этого я написал небольшой модуль на основе PyBatfish, позволяющий проводить следующие проверки:
+* Определять статус BGP пиров в сети
+* Определять состояние IS-IS соседей
+* Проверять наличие E2E связности между узлами в сети с демонстрацией трассировки
+* Определять размер RIB на определенном маршрутизаторе для определенного Routing protocol
+
+Let’s treat the network like an application!
