@@ -34,3 +34,32 @@ Batfish не требуется доступ на сетевое оборудо�
 * VyOS
 
 ![alt text](https://github.com/showroute/batfish-habr/blob/master/images/how-batfish-works.png)
+
+Batfish – это Java приложение, для удобного взаимодействия с ним был написан Pybatfish - python SDK.
+Перейдем к практике. Я продемонстрирую возможности Batfish на примере.
+
+## Example
+
+Под нашим управлением находится две автономные системы, в качестве IGP в AS 41214 используется IS-IS, в AS 10631 – OSPF, внутри каждой AS используется IBGP-fullmesh. R1 анонсирует своим соседям via BGP префикс 135.65.0.0/19, R7 – 140.0.0.0/24. Обмен маршрутной информацией между автономными системами происходит на стыке HKI-CORE-01 --- SPB-CORE-01.
+
+![alt text](https://github.com/showroute/batfish-habr/blob/master/images/topology1.png)
+
+Установим контейнер с batfish и python sdk.
+
+  `docker pull batfish/allinone`
+  `docker run batfish/allinone`
+  
+
+Познакомимся с библиотекой через интерактивный режим python:
+
+`root@ea9a1559d88e:/# python3
+--------------------
+>>> from pybatfish.client.commands import bf_logger, bf_init_snapshot
+>>> from pybatfish.question.question import load_questions
+>>> from pybatfish.question import bfq
+>>> import logging
+>>> bf_logger.setLevel(logging.ERROR)
+>>> load_questions()
+>>> bf_init_snapshot('tmp/habr')
+
+'ss_e8065858-a911-4f8a-b020-49c9b96d0381'`
