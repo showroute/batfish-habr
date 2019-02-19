@@ -167,6 +167,7 @@ Let’s treat a network like an application!
 ![alt text](https://github.com/showroute/batfish-habr/blob/master/images/test1.png)
 
 Тесты пройдены. 
+
 Внесем изменения в тестовую конфигурацию роутера **HKI-CORE-01** - /tmp/habr/configs/HKI-CORE-01.cfg :
 ```
 set firewall family inet filter BOGONS term TERM010 from address 0.0.0.0/8
