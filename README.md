@@ -100,7 +100,7 @@ root@ea9a1559d88e:/tmp/habr# tree
 1  ldn-core-01  default     41214  ldn-core-01:Loopback0  172.20.20.1      41214  ams-core-01  172.20.20.3         IBGP        ESTABLISHED
 2  ldn-core-01  default     41214  ldn-core-01:Loopback0  172.20.20.1      41214  hki-core-01  172.20.20.4         IBGP        ESTABLISHED
 ```
-Похоже на правду?
+Ну, как? Похоже на правду?
 ```
 LDN-CORE-01#show ip bgp summary
 …
