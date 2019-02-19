@@ -140,6 +140,7 @@ Nice! Полагаю, теперь Вам стало яснее, что есть
 * Определять размер RIB на определенном маршрутизаторе для определенного Routing protocol
 
 [LibraryBatfish.py](https://github.com/showroute/batfish-habr/blob/master/tests/LibraryBatfish.py)
+
 [batfish-test.robot](https://github.com/showroute/batfish-habr/blob/master/tests/batfish-test.robot)
 
 Let’s treat the network like an application!
