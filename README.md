@@ -45,14 +45,13 @@ Batfish – это Java приложение, для удобного взаим
 ![alt text](https://github.com/showroute/batfish-habr/blob/master/images/topology1.png)
 
 Установим контейнер с batfish и python sdk.
-
-  `docker pull batfish/allinone`
-  `docker run batfish/allinone`
-  
-
+```
+docker pull batfish/allinone
+docker run batfish/allinone
+```
 Познакомимся с библиотекой через интерактивный режим python:
-
-`root@ea9a1559d88e:/# python3
+```
+root@ea9a1559d88e:/# python3
 --------------------
 >>> from pybatfish.client.commands import bf_logger, bf_init_snapshot
 >>> from pybatfish.question.question import load_questions
@@ -62,4 +61,5 @@ Batfish – это Java приложение, для удобного взаим
 >>> load_questions()
 >>> bf_init_snapshot('tmp/habr')
 
-'ss_e8065858-a911-4f8a-b020-49c9b96d0381'`
+'ss_e8065858-a911-4f8a-b020-49c9b96d0381'
+```
