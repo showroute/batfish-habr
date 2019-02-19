@@ -111,7 +111,7 @@ Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State
 ```
 Awesome!
 
-Давайте посмотрим, какие IS-IS маршруты есть в RIB на маршрутизаторе HKI-CORE-01 по мнению Batfish
+Теперь давайте посмотрим, какие IS-IS маршруты есть в RIB на маршрутизаторе HKI-CORE-01 по мнению Batfish
 ```
 >>> isis_routes = bfq.routes(nodes='HKI-CORE-01', protocols='isis').answer().frame()
 >>> isis_routes
