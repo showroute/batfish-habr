@@ -255,7 +255,7 @@ index 8d963c5..ce8cb6a 100644
 
 ![alt text](https://github.com/showroute/batfish-habr/blob/master/images/test4.png)
 
-Связности между 135.65.0.1 и 150.0.0.1 нет, к тому же на маршрутизаторе **HKI-CORE-01** всего один eBGP маршрут, вместо двух. Проверим содержание RIB на HKI-CORE-01 при добавлении новой конфигурации на роутер MSK-CORE-01:
+Связности между 135.65.0.1 и 150.0.0.1 нет, к тому же на маршрутизаторе **HKI-CORE-01** всего один eBGP маршрут, вместо двух. Проверим содержимое RIB на HKI-CORE-01 при добавлении новой конфигурации на роутер MSK-CORE-01:
 ```
 showroute@HKI-CORE-01# run show route table inet.0 protocol bgp
 
