@@ -46,8 +46,8 @@ Batfish – это Java приложение, для удобного взаим
 
 Под нашим управлением находится две автономные системы, в качестве IGP в AS 41214 используется IS-IS, в AS 10631 – OSPF, внутри каждой AS используется IBGP-fullmesh. LDN-CORE-01 анонсирует своим соседям via BGP префикс 135.65.0.0/19, MSK-CORE-01 – 140.0.0.0/24. Обмен маршрутной информацией между автономными системами происходит на стыке HKI-CORE-01 --- SPB-CORE-01.
 
-HKI-CORE-01, STH-CORE-01 - Junos routers
-LDN-CORE-01, AMS-CORE-01, SPB-CORE-01, MSK-CORE-01 - Cisco IOS routers
+**HKI-CORE-01, STH-CORE-01** - Junos routers
+**LDN-CORE-01, AMS-CORE-01, SPB-CORE-01, MSK-CORE-01** - Cisco IOS routers
 
 ![alt text](https://github.com/showroute/batfish-habr/blob/master/images/topology1.png)
 
