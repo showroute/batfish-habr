@@ -162,11 +162,12 @@ Let’s treat a network like an application!
 
 Под моим управление находится все та же сеть. Допустим, мне требуется привести в порядок фильтры на границе **AS 41214** и **AS 10631** и заблокировать на стыке пакеты, содержащие в source или destination ip адреса из диапазона BOGONS.
 
-Запустим тест до внесения изменений.
+Запускаем тест до внесения изменений.
 
 ![alt text](https://github.com/showroute/batfish-habr/blob/master/images/test1.png)
 
-Тесты пройдены, внесем изменения в тестовую конфигурацию роутера **HKI-CORE-01** - /tmp/habr/configs/HKI-CORE-01.cfg :
+Тесты пройдены. 
+Внесем изменения в тестовую конфигурацию роутера **HKI-CORE-01** - /tmp/habr/configs/HKI-CORE-01.cfg :
 ```
 set firewall family inet filter BOGONS term TERM010 from address 0.0.0.0/8
 set firewall family inet filter BOGONS term TERM010 from address 10.0.0.0/8
