@@ -32,3 +32,5 @@ Batfish не требуется доступ на сетевое оборудо�
 * Quagga / FRR
 * Quanta
 * VyOS
+
+![alt text](https://github.com/showroute/batfish-habr/blob/master/images/how-batfish-works.png)
