@@ -172,7 +172,6 @@ set interfaces ge-0/0/2.0 family inet filter input BOGONS
 set interfaces ge-0/0/2.0 family inet filter output BOGONS  
 ```
 Запускаем тест.
-
 ![alt text](https://github.com/showroute/batfish-habr/blob/master/images/test2.png)
 
 Oops. Я был очень близок, но как, показывает вывод теста, после внесенных изменений BGP соседство 192.168.30.0 – 192.168.30.1 находится не в состоянии Established -> как следствие, теряется IP связность между точками 135.65.0.1 <-> 140.0.0.1. Что же не так? Смотрим внимательно в конфигурацию HKI-CORE-01 и видимо, что eBGP пиринг установлен на приватных адресах: 
@@ -190,5 +189,5 @@ set interfaces ge-0/0/2 unit 0 family inet address 192.168.30.0/31
 set firewall family inet filter BOGONS term TERM005 from address 192.168.0.0/31 
 set firewall family inet filter BOGONS term TERM005 then accept               
 ```
-Запустим тест:
+Запустим тест.
 ![alt text](https://github.com/showroute/batfish-habr/blob/master/images/test3.png)
