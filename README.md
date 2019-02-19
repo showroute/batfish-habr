@@ -217,7 +217,31 @@ router bgp 10631
 ```
 
 Изменим тестовый сценарий и запустим проверку:
-
+```
+git diff HEAD~
+diff --git a/batfish-robot.robot b/batfish-robot.robot
+index 8d963c5..ce8cb6a 100644
+--- a/batfish-robot.robot
++++ b/batfish-robot.robot
+@@ -5,7 +5,7 @@ Library  LibraryBatfish.py  tmp/habr
+ ${ISIS-ENABLED-LINK-DESCRIPTION}  ISIS-LINK
+ ${NODE}  HKI-CORE-01
+ ${PROTOCOL}  ebgp
+-${RIB-SIZE}  1
++${RIB-SIZE}  2
+ 
+ *** Test Cases ***
+ ISIS
+@@ -27,3 +27,8 @@ Ping
+     [Documentation]  Test end-to-end ICMP connectivity & show traceroute
+     ${result}=  Ping  135.65.0.1  140.0.0.1
+     Should Be Equal As Integers  ${result}  1
++
++Ping2
++    [Documentation]  Test end-to-end ICMP connectivity & show traceroute
++    ${result}=  Ping  135.65.0.1  150.0.0.1
++    Should Be Equal As Integers  ${result}  1
+```
 *теперь я ожидаю увидеть два eBGP маршрута на роутере HKI-CORE-01, так же добавлена проверка 
 
 ![alt text](https://github.com/showroute/batfish-habr/blob/master/images/test4.png)
