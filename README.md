@@ -336,3 +336,5 @@ https://www.youtube.com/channel/UCA-OUW_3IOt9U_s60KvmJYA
 
 https://github.com/batfish/batfish
 
+https://media.readthedocs.org/pdf/pybatfish/latest/pybatfish.pdf
+
