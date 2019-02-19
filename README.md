@@ -91,7 +91,7 @@ root@ea9a1559d88e:/tmp/habr# tree
 1 directory, 6 files
 ```
 
-Давайте определим статус BGP сессий на роутере LDN-CORE-01:
+Теперь давайте определим статус BGP сессий на роутере LDN-CORE-01:
 ```
 >>> bgp_peers = bfq.bgpSessionStatus(nodes='LDN-CORE-01').answer().frame()
 >>> bgp_peers
