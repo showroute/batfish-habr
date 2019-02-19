@@ -312,3 +312,17 @@ showroute@HKI-CORE-01# show | compare
 ![alt text](https://github.com/showroute/batfish-habr/blob/master/images/test5.png)
 
 Отлично, связность между сетями есть, все тесты пройдены! Можно вносить изменения на prod.
+
+## Сonclusion
+В заключении 
+
+## Useful links
+
+https://www.batfish.org/
+
+https://www.intentionet.com/
+
+https://www.youtube.com/channel/UCA-OUW_3IOt9U_s60KvmJYA
+
+https://github.com/batfish/batfish
+
