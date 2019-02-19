@@ -183,7 +183,7 @@ set interfaces ge-0/0/2 unit 0 family inet filter input BOGONS
 set interfaces ge-0/0/2 unit 0 family inet filter output BOGONS
 set interfaces ge-0/0/2 unit 0 family inet address 192.168.30.0/31
 ```
-Вывод: поменять адреса на стыке или добавить в исключение подсеть 192.168.30.0/31.
+Вывод: необходимо поменять адреса на стыке или добавить в исключение подсеть 192.168.30.0/31.
 
 Добавлю сеть на стыке в исключение - снова обновлю /tmp/habr/configs/HKI-CORE-01.cfg:
 ```
@@ -193,3 +193,90 @@ set firewall family inet filter BOGONS term TERM005 then accept
 Запустим тест.
 
 ![alt text](https://github.com/showroute/batfish-habr/blob/master/images/test3.png)
+
+It is working! Теперь нежелательный трафик не пройдет через ebgp стык  AS 41214 – AS10631. Можно смело вносить изменения в prod, не опасаясь последствий.
+
+## Case N2
+
+![alt text](https://github.com/showroute/batfish-habr/blob/master/images/topology2.png)
+
+Мне необходимо затерминировать сеть 150.0.0.0/24 на роутере **MSK-CORE-01** и обеспечить связность между точками 135.65.0.1 и 150.0.0.1
+
+Добавим следующие строки в тестовую конфигурацию маршрутизатора MSK-CORE-01 - tmp/habr/configs/MSK-CORE-01.cfg:
+```
+interface Loopback2
+ ip address 150.0.0.1 255.255.255.255
+!
+ip route 150.0.0.0 255.255.255.0 Null0
+!
+router bgp 10631
+ !
+ address-family ipv4
+  network 150.0.0.0 mask 255.255.255.0
+!
+```
+
+Изменим тестовый сценарий и запустим проверку:
+
+*теперь я ожидаю увидеть два eBGP маршрута на роутере HKI-CORE-01, так же добавлена проверка 
+
+![alt text](https://github.com/showroute/batfish-habr/blob/master/images/test4.png)
+
+Связности между 135.65.0.1 и 150.0.0.1 нет, к тому же на маршрутизаторе **HKI-CORE-01** всего один eBGP маршрут, вместо двух. Проверим содержание RIB на HKI-CORE-01 при добавлении новой конфигурации на роутер MSK-CORE-01:
+```
+showroute@HKI-CORE-01# run show route table inet.0 protocol bgp
+
+inet.0: 20 destinations, 20 routes (19 active, 0 holddown, 1 hidden)
++ = Active Route, - = Last Active, * = Both
+
+135.65.0.0/19      *[BGP/170] 02:25:38, MED 0, localpref 100, from 172.20.20.1
+                      AS path: I, validation-state: unverified
+                    > to 10.0.0.4 via ge-0/0/0.0
+                      to 10.0.0.6 via ge-0/0/1.0
+140.0.0.0/24       *[BGP/170] 01:38:02, localpref 100
+                      AS path: 10631 I, validation-state: unverified
+                    > to 192.168.30.1 via ge-0/0/2.0
+
+showroute@HKI-CORE-01# run show route table inet.0 protocol bgp hidden detail
+
+inet.0: 20 destinations, 20 routes (19 active, 0 holddown, 1 hidden)
+150.0.0.0/24 (1 entry, 0 announced)
+         BGP                 /-101
+                Next hop type: Router, Next hop index: 563
+                Address: 0x940f43c
+                Next-hop reference count: 4
+                Source: 192.168.30.1
+                Next hop: 192.168.30.1 via ge-0/0/2.0, selected
+                Session Id: 0x9
+                State: <Hidden Ext>
+                Local AS: 41214 Peer AS: 10631
+                Age: 1:42:03
+                Validation State: unverified
+                Task: BGP_10631.192.168.30.1+179
+                AS path: 10631 I
+                Localpref: 100
+                Router ID: 10.68.1.1
+                Hidden reason: rejected by import policy
+```
+Обратим внимание на политику импорта префиксов, полученных от SPB-CORE-01:
+```
+set protocols bgp group AS10631 import FROM-AS10631
+set protocols bgp group AS10631 neighbor 192.168.30.1 description SPB-CORE-01
+set protocols bgp group AS10631 neighbor 192.168.30.1 peer-as 10631
+set policy-options policy-statement FROM-AS10631 term TERM010 from route-filter 140.0.0.0/24 exact
+set policy-options policy-statement FROM-AS10631 term TERM010 then accept
+set policy-options policy-statement FROM-AS10631 term DENY then reject
+```
+Не хватает правила, разрешающего 150.0.0.0/24. Добавим его в тестовую конфигурацию и запустим проверку:
+```
+showroute@HKI-CORE-01# show | compare
+[edit policy-options policy-statement FROM-AS10631 term TERM010 from]
+       route-filter 140.0.0.0/24 exact { ... }
++      route-filter 150.0.0.0/24 exact;
+
+[edit]
+```
+
+![alt text](https://github.com/showroute/batfish-habr/blob/master/images/test5.png)
+
+Отлично, связность между сетями есть, все тесты пройдены! Можно вносить изменения на prod.
