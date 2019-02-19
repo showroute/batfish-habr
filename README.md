@@ -40,7 +40,10 @@ Batfish может:
 ![alt text](https://github.com/showroute/batfish-habr/blob/master/images/how-batfish-works.png)
 
 Batfish – это Java приложение. Для удобного взаимодействия с ним был написан Pybatfish - python SDK.
-Перейдем к практике. Я продемонстрирую возможности Batfish на примере.
+
+Перейдем к практике. 
+
+Я продемонстрирую Вам возможности Batfish на примере.
 
 ## Example
 
