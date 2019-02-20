@@ -210,7 +210,7 @@ set firewall family inet filter BOGONS term TERM005 then accept
 
 ![alt text](https://github.com/showroute/batfish-habr/blob/master/images/test3.png)
 
-Теперь нежелательный трафик не пройдет через ebgp стык  AS 41214 – AS10631. Можно смело вносить изменения в продакшн, не опасаясь последствий.
+Теперь нежелательный трафик не пройдет через ebgp стык  AS 41214 – AS10631. Можно смело вносить изменения, не опасаясь последствий.
 
 ## Сценарий N2
 
