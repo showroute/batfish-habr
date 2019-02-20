@@ -59,8 +59,13 @@ class LibraryBatfish(object):
 
     def _get_traceroute_status(self, source_ip, destination_ip, addresses):
         tracert = self._unidirectional_virtual_traceroute(source_ip, destination_ip, addresses)
-        if tracert != None and tracert.rows[0].get('Traces')[0].get('disposition') == 'ACCEPTED':
-            return True
+        isAccepted = True
+        if tracert != None:
+            for trace in tracert.rows[0].get('Traces'):
+                if trace.get('disposition') != 'ACCEPTED':
+                    isAccepted = False
+        if isAccepted == True:
+            return True    
         else:
             return False
 
