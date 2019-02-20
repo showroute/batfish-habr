@@ -201,7 +201,7 @@ set interfaces ge-0/0/2 unit 0 family inet address 192.168.30.0/31
 ```
 Вывод: необходимо поменять адреса на стыке или добавить в исключение подсеть 192.168.30.0/31.
 
-Добавлю сеть на стыке в исключение, вноь обновлю /tmp/habr/configs/HKI-CORE-01.cfg:
+Добавлю сеть на стыке в исключение, вновь обновлю /tmp/habr/configs/HKI-CORE-01.cfg:
 ```
 set firewall family inet filter BOGONS term TERM005 from address 192.168.0.0/31 
 set firewall family inet filter BOGONS term TERM005 then accept               
