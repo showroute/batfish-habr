@@ -62,6 +62,7 @@ docker run batfish/allinone
 ```
 Познакомимся с библиотекой через интерактивный режим python:
 ```
+docker container exec -it <container> bash
 root@ea9a1559d88e:/# python3
 --------------------
 >>> from pybatfish.client.commands import bf_logger, bf_init_snapshot
