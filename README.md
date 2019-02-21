@@ -120,7 +120,7 @@ Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State
 4  hki-core-01  default     10.0.0.2/31  ams-core-01    10.0.0.6   isisL2              18      20  None
 5  hki-core-01  default  172.20.20.1/32  sth-core-01    10.0.0.4   isisL2              18      30  None
 ```
-В cli:
+В командной строке:
 ```
 showroute@HKI-CORE-01# run show route table inet.0 protocol isis
 
