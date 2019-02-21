@@ -8,6 +8,7 @@ from robot.api import logger
 
 
 class LibraryBatfish(object):
+    
     def __init__(self, snapshot):
         bf_logger.setLevel(logging.ERROR)
         load_questions()
