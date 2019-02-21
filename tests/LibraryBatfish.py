@@ -1,7 +1,6 @@
 from pybatfish.client.commands import bf_logger, bf_init_snapshot
 from pybatfish.question.question import load_questions, list_questions
 from pybatfish.question import bfq
-from pybatfish.datamodel.flow import TcpFlags, MatchTcpFlags
 from pybatfish.datamodel.flow import HeaderConstraints, PathConstraints
 from robot.api import logger
 import logging
