@@ -54,7 +54,7 @@ Batfish – это Java приложение. Для удобного взаим
 
 ![alt text](https://github.com/showroute/batfish-habr/blob/master/images/topology1.png)
 
-Установим контейнер с batfish и python sdk.
+Установим контейнер с Batfish и python SDK.
 ```
 docker pull batfish/allinone
 docker run batfish/allinone
